@@ -31,10 +31,8 @@ def create_app(test_config=None):
     movlist.db.init_app(app)
 
     # apply the blueprints to the app
-    from flaskr import auth, blog
-
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(blog.bp)
+    app.register_blueprint(movlist.auth.bp)
+    app.register_blueprint(movlist.blog.bp)
 
     app.add_url_rule("/", endpoint="index")
 
