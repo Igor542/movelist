@@ -33,5 +33,5 @@ CREATE TABLE movie_list (
   user_id  INTEGER   NOT NULL,
   added    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (movie_id) REFERENCES movie(id),
-  FOREIGN KEY (user_id)  REFERENCES user(id),
+  FOREIGN KEY (user_id)  REFERENCES user(id)
 );

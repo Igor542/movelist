@@ -7,8 +7,8 @@ from flask import request
 from flask import url_for
 from werkzeug.exceptions import abort
 
-from flaskr.auth import login_required
-from flaskr.db import get_db
+from movlist.auth import login_required
+from movlist.db import get
 
 bp = Blueprint("blog", __name__)
 

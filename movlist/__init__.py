@@ -1,7 +1,9 @@
 import os
 
 from flask import Flask
-import movlist
+import movlist.auth
+import movlist.blog
+import movlist.db
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
