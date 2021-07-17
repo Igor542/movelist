@@ -66,7 +66,7 @@ def register():
 @bp.route("/login", methods=("GET", "POST"))
 def login():
     if flask.request.method == "POST":
-        username = flask,request.form["username"]
+        username = flask.request.form["username"]
         password = flask.request.form["password"]
         db = movlist.db.get()
         error = None
