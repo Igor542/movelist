@@ -17,12 +17,14 @@ bp = Blueprint("blog", __name__)
 def index():
     """Show all the posts, most recent first."""
     db = movlist.db.get()
-    posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username"
-        " FROM post p JOIN user u ON p.author_id = u.id"
-        " ORDER BY created DESC"
+    movies = db.execute(
+        "SELECT l.id, m.title, u.username, l.date_added"
+        " FROM movie_list l "
+        " LEFT JOIN user u ON l.user_id = u.id"
+        " LEFT JOIN movie m ON l.movie_id = m.id"
+        " ORDER BY date_added DESC"
     ).fetchall()
-    return render_template("blog/index.html", posts=posts)
+    return render_template("blog/index.html", movies=movies)
 
 
 def get_post(id, check_author=True):
@@ -40,7 +42,7 @@ def get_post(id, check_author=True):
     post = (
         movlist.db.get()
         .execute(
-            "SELECT p.id, title, body, created, author_id, username"
+            "SELECT l.id, title, body, created, author_id, username"
             " FROM post p JOIN user u ON p.author_id = u.id"
             " WHERE p.id = ?",
             (id,),
