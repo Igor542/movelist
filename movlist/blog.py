@@ -62,11 +62,12 @@ def get_post(id, check_author=True):
 @bp.route("/create", methods=("GET", "POST"))
 @movlist.auth.login_required
 def create():
-    """Create a new post for the current user."""
+    """Create a new film for the current user."""
     if request.method == "POST":
         title = request.form["title"]
-        body = request.form["body"]
         error = None
+
+        # TODO: Check title before passing it to the database
 
         if not title:
             error = "Title is required."
@@ -75,11 +76,28 @@ def create():
             flash(error)
         else:
             db = movlist.db.get()
-            db.execute(
-                "INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)",
-                (title, body, g.user["id"]),
+            # check if movie exists in the database
+            movie_exist_entry = (
+                db.execute(
+                    f"SELECT id FROM movie m WHERE m.title = \"{title}\""
+                )
+                .fetchone()
             )
-            db.commit()
+            if movie_exist_entry == None:
+                db.execute(
+                    f"INSERT INTO movie (title) VALUES (\"{title}\")",
+                )
+                movie_entry = (
+                    db.execute(
+                    f"SELECT id FROM movie m WHERE m.title = \"{title}\""
+                    )
+                    .fetchone()
+                )
+                db.execute(
+                    "INSERT INTO movie_list (movie_id, user_id) VALUES (?,?)",
+                    (movie_entry["id"], g.user["id"]),
+                )
+                db.commit()
             return redirect(url_for("blog.index"))
 
     return render_template("blog/create.html")
