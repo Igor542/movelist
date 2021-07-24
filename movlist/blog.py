@@ -17,7 +17,7 @@ bp = Blueprint("blog", __name__)
 def index():
     """Show all the posts, most recent first."""
     db = movlist.db.get()
-    user_id = g.user['id']
+    user_id = g.user['id'] if g.user else -1
     entries = db.execute(
         "SELECT l.id as list_id, m.id as movie_id, m.title, u.username, COALESCE(r.rating, 0) as user_rating, l.avg_rating, l.date_added"
         " FROM movie_list l"
