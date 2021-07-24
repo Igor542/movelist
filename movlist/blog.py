@@ -48,8 +48,7 @@ def get_post(id, check_author=True):
             " FROM post p JOIN user u ON p.author_id = u.id"
             " WHERE p.id = ?",
             (id,),
-        )
-        .fetchone()
+        ).fetchone()
     )
 
     if post is None:
@@ -70,7 +69,6 @@ def create():
         error = None
 
         # TODO: Check title before passing it to the database
-
         if not title:
             error = "Title is required."
 
@@ -79,22 +77,16 @@ def create():
         else:
             db = movlist.db.get()
             # check if movie exists in the database
-            movie_exist_entry = (
-                db.execute(
-                    f"SELECT id FROM movie m WHERE m.title = \"{title}\""
-                )
-                .fetchone()
-            )
-            if movie_exist_entry == None:
+            movie_exist_entry = db.execute(
+                f"SELECT id FROM movie m WHERE m.title = \"{title}\""
+            ).fetchone()
+            if movie_exist_entry is None:
                 db.execute(
                     f"INSERT INTO movie (title) VALUES (\"{title}\")",
                 )
-                movie_entry = (
-                    db.execute(
+                movie_entry = db.execute(
                     f"SELECT id FROM movie m WHERE m.title = \"{title}\""
-                    )
-                    .fetchone()
-                )
+                ).fetchone()
                 db.execute(
                     "INSERT INTO movie_list (movie_id, user_id) VALUES (?,?)",
                     (movie_entry["id"], g.user["id"]),
