@@ -17,14 +17,16 @@ bp = Blueprint("blog", __name__)
 def index():
     """Show all the posts, most recent first."""
     db = movlist.db.get()
-    movies = db.execute(
-        "SELECT l.id, m.title, u.username, l.date_added"
-        " FROM movie_list l "
+    user_id = g.user['id']
+    entries = db.execute(
+        "SELECT l.id as list_id, m.id as movie_id, m.title, u.username, COALESCE(r.rating, 0) as user_rating, l.avg_rating, l.date_added"
+        " FROM movie_list l"
         " LEFT JOIN user u ON l.user_id = u.id"
         " LEFT JOIN movie m ON l.movie_id = m.id"
+        f" LEFT JOIN bridge_movie_user_rating r on l.movie_id = r.movie_id and r.user_id = {user_id}"
         " ORDER BY date_added DESC"
     ).fetchall()
-    return render_template("blog/index.html", movies=movies)
+    return render_template("blog/index.html", entries=entries)
 
 
 def get_post(id, check_author=True):

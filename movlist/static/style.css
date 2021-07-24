@@ -132,3 +132,17 @@ input[type=submit] {
   align-self: start;
   min-width: 10em;
 }
+
+#movlist_table
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#movlist_table
+table {
+  width: 100%;
+}
+#movlist_table
+th {
+  text-align: left;
+}

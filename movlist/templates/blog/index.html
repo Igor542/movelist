@@ -8,20 +8,26 @@
 {% endblock %}
 
 {% block content %}
+<div id='movlist_table'>
   <table>
     <tr>
       <th>id</th>
       <th>title</th>
       <th>username</th>
+      <th>your rating</th>
+      <th>average rating</th>
       <th>date_added</th>
     </tr>
-  {% for movie in movies %}
+  {% for entry in entries %}
     <tr>
-      <th>{{ movie['id'] }}</th>
-      <th>{{ movie['title'] }}</th>
-      <th>{{ movie['username'] }}</th>
-      <th>{{ movie['date_added'].strftime('%Y-%m-%d') }}</th>
+      <th>{{ entry['list_id'] }}</th>
+      <th>{{ entry['title'] }}</th>
+      <th>{{ entry['username'] }}</th>
+      <th>{{ entry['user_rating'] }}</th>
+      <th>{{ entry['avg_rating'] }}</th>
+      <th>{{ entry['date_added'].strftime('%Y-%m-%d') }}</th>
     </tr>
   {% endfor %}
   </table>
+</div>
 {% endblock %}
